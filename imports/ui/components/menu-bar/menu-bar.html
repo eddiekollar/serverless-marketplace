@@ -20,6 +20,7 @@
           </ul>
         </li>
         {{#unless currentUser}}
+        <li><a href="{{pathFor '/signup'}}">Sign Up</a></li>
         <li><a href="{{pathFor '/signin'}}">Sign In</a></li>
         {{/unless}}
       </ul>

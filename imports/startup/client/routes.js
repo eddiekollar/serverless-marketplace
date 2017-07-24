@@ -44,7 +44,14 @@ FlowRouter.route('/terms-of-use', {
 FlowRouter.route('/signin', {
   name: 'login',
   action() {
-    BlazeLayout.render('App_body', { main: 'login' });
+    BlazeLayout.render('App_body', { main: 'auth', params: {state: 'signIn'} });
+  }
+});
+
+FlowRouter.route('/signup', {
+  name: 'signup',
+  action() {
+    BlazeLayout.render('App_body', { main: 'auth', params: {state: 'signUp'} });
   }
 });
 
