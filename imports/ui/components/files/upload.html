@@ -1,0 +1,58 @@
+<template name="uploadForm">
+  <div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Create New Function</h3>
+  </div>
+  <div class="panel-body">
+    <div class="alert alert-info" role="alert">
+      Please make sure your submission is a .zip file containing the following:
+      <ul>
+        <li>filename.js (The file containing source)</li>
+        <li>node_modules (If libraries required)</li>
+        <li>package.json</li>
+        <li>README.md (Containing documentation for using this function)</li>
+      </ul>
+    </div>
+    {{#with currentUpload}}
+    Uploading <b>{{file.name}}</b>
+    <div class="progress">
+      <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{progress.get}}" aria-valuemin="0" aria-valuemax="100" style="width: 5%">
+        <span >{{progress.get}}% Complete</span>
+      </div>
+    </div>
+  {{else}}
+  {{#autoForm schema=getSchema id="newFunction" meteormethod="function.new" type="method"}}
+  <fieldset>
+      <legend>Details</legend>
+      <div id='name-group' class="form-group">
+        <label for="funcName">Function Name</label>
+        {{> afFieldInput name='name' placeholder='function_name'}}
+      </div>
+      <div id='handler-group' class="form-group">
+        <label for="handler">Function Handler</label>
+        {{> afFieldInput name='handler' placeholder='file.functionName'}}
+        <span id="helpBlock" class="help-block">
+          For example handler.js contains the code for the function: <br/>
+          <code>exports.myFunction = function(event, context, callback) { ... } </code> <br/>
+          The handler is <strong>handler.myFunction</strong>.
+        </span>
+      </div>
+      <div id='description-group' class="form-group">
+        <label for="handler">Short Description</label>
+        {{> afFieldInput type='textarea' name='description' rows=3}}
+      </div>
+      {{> afArrayField name='params'}}
+      <div class="form-group">
+        <label for="fileInput">
+          Browse for .zip file
+        </label>
+        <input id="fileInput" type="file" required/>
+      </div>
+    </fieldset>
+    <button type="submit" class="btn btn-primary btn-default">Submit</button>
+    <button id="cancel" type="button" class="btn btn-danger btn-default">Cancel</button>
+  {{/autoForm}}
+  {{/with}}
+  </div>
+</div>
+</template>

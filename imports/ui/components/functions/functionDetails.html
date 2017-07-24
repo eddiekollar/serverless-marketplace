@@ -1,0 +1,21 @@
+<template name="functionDetails">
+  <div class="panel panel-default">
+      <div class="panel-heading">
+            <h3 class="panel-title">{{name}}</h3>    
+      </div>
+      <div class="panel-body">
+        <ul class="list-group">
+          {{#if $or (isInRole 'admin') isOwner}}
+
+          <li class="list-group-item">Status: {{formattedStatus}}</li>
+          {{/if}}
+          <li class="list-group-item">Handler: {{handler}} </li>
+          <li class="list-group-item">Description: {{description}}</li>
+          <li class="list-group-item">Times Forked: {{timesForked}} <span class="glyphicon glyphicon-share-alt"></span></li>
+        </ul>
+        <p>
+          <button id='view' type="button" class="btn btn-default btn-lg btn-block">View</button>
+        </p>
+      </div>
+  </div>
+</template>

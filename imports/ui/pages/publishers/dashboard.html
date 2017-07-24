@@ -1,3 +1,38 @@
 <template name='publisherDashboard'>
-Publisher Dashboard
+  <div class="page-header">
+    <h1 class="text-center">Dashboard</h1>
+  </div>
+  {{#with alertMessage}}
+    <div class="alert {{class}}  alert-dismissible" role="alert">
+      {{message}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    </div>
+  {{/with}}
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <button id="new-submission" type="button" class="btn btn-success navbar-btn">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Function
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+        {{#if Template.subscriptionsReady}}
+          {{#each getFunctionList}}
+            <div class="col-xs-6 col-sm-4">
+            {{> functionDetails}}
+            </div>
+            {{else}}
+              <p class="bg-warning" style="padding:15px">To begin please create a function</p>
+          {{/each}}
+        {{/if}}
+      </div>
+    </div>
+  </div>
 </template>

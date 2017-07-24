@@ -1,3 +1,38 @@
 <template name="main">
-  <h1>Main</h1>
+  {{#unless currentUser}}
+  <div class="jumbotron">
+    <h1 class="text-center">Serverless Marketplace</h1>
+    <p class="text-center">A marketplace for developers and function users</p>
+    <p class="text-center">
+      <a id="join-publisher" class="btn btn-primary btn-lg" href="{{pathFor route='publisher.signup'}}" role="button">
+        <span class="glyphicon glyphicon-console" aria-hidden="true"></span>
+        Join as a code publisher
+      </a>
+    </p>
+    <p class="text-center">
+      <a id="join-licensee" class="btn btn-success btn-lg" href="{{pathFor route='licensee.signup'}}" role="button">
+        <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+        Join as code licensee
+      </a>
+    </p>
+  </div>
+  {{/unless}}
+  <div class="page-header">
+    <h1 class="text-center">Functions</h1>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+        {{#if Template.subscriptionsReady}}
+          {{#each getFunctionList}}
+            <div class="col-xs-6 col-sm-4">
+            {{> functionDetails}}
+            </div>
+            {{else}}
+              <p class="bg-warning" style="padding:15px">No functions are currently available</p>
+          {{/each}}
+        {{/if}}
+      </div>
+    </div>
+  </div>
 </template>

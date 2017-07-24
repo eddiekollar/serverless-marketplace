@@ -11,26 +11,46 @@ const onSubmitHook = (error, state) =>{
     if (!error) {
         const user = Meteor.user();
         if (state === "signIn") {
-            if(user && Roles.userIsInRole(user,['publisher']) && !user.profile.onboardComplete){
-                Session.set('redirectAfterLogin','publisher.onboard');
-            }
+            
+            // if(user && Roles.userIsInRole(user,['admin'], Roles.GLOBAL_GROUP)){
+            //     Session.set('redirectAfterLogin','admin.dashboard');
+            // }
+            // else if(user && Roles.userIsInRole(user,['publisher'], Roles.GLOBAL_GROUP)){
+            //     if(!user.profile.onboardComplete){
+            //         Session.set('redirectAfterLogin','publisher.onboard');
+            //     }else{
+            //         Session.set('redirectAfterLogin', 'publisher.dashboard');
+            //     }
+            // }
+            // else if(user && Roles.userIsInRole(user,['licensee'], Roles.GLOBAL_GROUP)){
+            //     if(!user.profile.onboardComplete){
+            //         Session.set('redirectAfterLogin','licensee.onboard');
+            //     }else{
+            //         Session.set('redirectAfterLogin', 'licensee.dashboard');
+            //     }
+            // }
         }
         if (state === "signUp") {
-            if(user && !user.profile.onboardComplete){
-                Session.set('redirectAfterLogin','publisher.onboard');
-            }
+            // if(user && !user.profile.onboardComplete){
+            //     if(Roles.userIsInRole(user,['publisher'], Roles.GLOBAL_GROUP)){
+            //         Session.set('redirectAfterLogin','publisher.onboard');
+            //     }else if(Roles.userIsInRole(user,['licensee'], Roles.GLOBAL_GROUP)){
+            //         Session.set('redirectAfterLogin','licensee.onboard');
+            //     }
+            // }
         }
     }
 }
 
 const preSignUpHook = (password, info) => {
     console.log('preSignUpHook');
+    info.signupType = Session.get('signupType');
 }
 
 const postSignUpHook = (userId, info) => {
     console.log('postSignUpHook');    
     if(Meteor.isServer) {
-        Roles.addUsersToRoles(userId, 'publisher', Roles.GLOBAL_GROUP);
+        Roles.addUsersToRoles(userId, info.signupType, Roles.GLOBAL_GROUP);
     }
 }
 
@@ -43,6 +63,8 @@ AccountsTemplates.configure({
     sendVerificationEmail: false,
     lowercaseUsername: false,
     focusFirstInput: true,
+    
+    hideSignUpLink: true,
 
     // Client-side Validation
     continuousValidation: false,

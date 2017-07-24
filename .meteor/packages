@@ -6,15 +6,15 @@
 
 meteor-base@1.1.0             # Packages every Meteor app needs to have
 mobile-experience@1.0.4       # Packages for a great mobile UX
-mongo@1.1.18                   # The database Meteor supports right now
+mongo@1.1.19                   # The database Meteor supports right now
 blaze-html-templates    # Compile .html files into Meteor Blaze views
 reactive-var@1.0.11            # Reactive variable for tracker
 tracker@1.1.3                 # Meteor's client-side reactive programming library
 
 standard-minifier-css@1.3.4   # CSS minifier run for production mode
-standard-minifier-js@2.1.0    # JS minifier run for production mode
+standard-minifier-js@2.1.1    # JS minifier run for production mode
 es5-shim@4.6.15                # ECMAScript 5 compatibility for older browsers
-ecmascript@0.8.0              # Enable ECMAScript2015+ syntax in app code
+ecmascript@0.8.1              # Enable ECMAScript2015+ syntax in app code
 
 kadira:flow-router      # FlowRouter is a very simple router for Meteor
 kadira:blaze-layout     # Layout manager for blaze (works well with FlowRouter)
@@ -23,16 +23,20 @@ less@2.7.9                    # Leaner CSS language
 
 practicalmeteor:mocha             # A package for writing and running your meteor app and package tests with mocha
 johanbrook:publication-collector  # Test a Meteor publication by collecting its output
-aldeed:autoform
 useraccounts:bootstrap
-accounts-base
-accounts-password
+accounts-base@1.3.1
+accounts-password@1.4.0
 alanning:roles
-forwarder:autoform-wizard
 aldeed:template-extension
 twbs:bootstrap
 useraccounts:flow-routing
 arillo:flow-router-helpers
 aldeed:collection2-core
 aldeed:schema-deny
-session
+session@1.1.7
+ostrio:files
+dburles:collection-helpers
+raix:handlebar-helpers
+nimble:restivus
+matb33:collection-hooks
+aldeed:autoform

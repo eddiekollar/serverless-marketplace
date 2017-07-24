@@ -1,4 +1,6 @@
 import { Template } from 'meteor/templating';
+import { FlowRouter } from 'meteor/kadira:flow-router';
+import {Roles} from 'meteor/alanning:roles'; 
 import bootstrap from 'bootstrap';
 import './menu-bar.html';
 
@@ -6,10 +8,13 @@ function setupMenu(isLoggedIn) {
   if(isLoggedIn) {
     $('.dropdown-toggle').dropdown();
     $('.dropdown').show();
+    $('#dashboard').show()
   }else{
     $('.dropdown').hide();
+    $('#dashboard').hide()
   }
 }
+
 function displayName (user) {
   var name;
 
@@ -57,8 +62,20 @@ Template.menuBar.helpers({
 });
 
 Template.menuBar.events({
+  'click #dashboard': function(events){
+    const user = Meteor.user();
+    const roles = Roles.getRolesForUser(Meteor.userId(), Roles.GLOBAL_GROUP);
+
+    if (roles.includes('admin')) {
+      FlowRouter.go('/admin/dashboard');
+    }else if(roles.includes('publisher')) {
+      FlowRouter.go('/publisher/dashboard');
+    }else if(roles.includes('licensee')) {
+      FlowRouter.go('/licensee/dashboard');
+    }
+  },
   'click #logout': function(events){
     $('.dropdown').hide();
-    Meteor.logout();
+    FlowRouter.go('/logout');
   }
 });

@@ -1,2 +1,2 @@
 import './onboard.html';
-import '../../components/wizards/developer-onboard/wizard.js';
+import '../../components/wizards/publisher-onboard/wizard.js';

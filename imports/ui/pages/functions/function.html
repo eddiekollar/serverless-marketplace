@@ -1,0 +1,107 @@
+<template name="function">
+  {{#with functionDoc}}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+          <h3 class="panel-title">{{name}}</h3>    
+    </div>
+    <div class="panel-body">
+      {{#autoForm schema=getSchema id="displayForm" doc=functionDoc type="update" class="form-horizontal"}}
+      <fieldset>
+        <legend>Details</legend>
+        <div id='name-group' class="form-group">
+          <label for="funcName" class="col-sm-2 control-label">Name:</label>
+          <div class="col-sm-10">
+            <p class="form-control-static">{{name}}</p>
+          </div>
+        </div>
+        {{#if $or (isInRole 'admin') isOwner}}
+        <div id='status-group' class="form-group">
+          <label for="status" class="col-sm-2 control-label">Status:</label>
+          <div class="col-sm-10">
+            <p class="form-control-static">{{formattedStatus}}</p>
+          </div>
+        </div>
+        <div id='handler-group' class="form-group">
+          <label for="handler" class="col-sm-2 control-label">Handler:</label>
+          <div class="col-sm-10">
+            <p class="form-control-static">{{handler}}</p>
+          </div>
+        </div>
+        {{/if}}
+        <div id='fork-group' class="form-group">
+          <label for="forked" class="col-sm-2 control-label">Forked:</label>
+          <div class="col-sm-10">
+            <p class="form-control-static">{{timesForked}} times</p>
+          </div>
+        </div>
+        <div id='description-group' class="form-group">
+          <label for="handler" class="col-sm-2 control-label">Description:</label>
+          <div class="col-sm-10">
+            <p class="form-control-static">{{description}}</p>
+          </div>
+        </div>
+        {{#if params}}
+        <div id='description-group' class="form-group">
+          <label class="col-sm-2 control-label">Parameters:</label>
+          <div class="col-sm-10">
+          {{#each params}}
+            <div class="row">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">Key:</label>
+                <div class="col-sm-2">
+                  <p class="form-control-static">{{this.key}}</p>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">Description:</label>
+                <div class="col-sm-4">
+                  <p class="form-control-static">{{this.description}}</p>
+                </div>
+              </div>
+            </div>
+          {{/each}}
+          </div>
+        </div>
+        {{/if}}
+        {{#if $and (isInRole 'licensee') ($eq status 'ACTIVE')}}
+          <p>
+            <button id='fork' type="button" class="btn btn-primary">{{#if isForking}}<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> {{/if}}Fork{{#if isForking}}ing...{{/if}}</button>
+          </p>
+        {{/if}}
+        {{#if $and (isInRole 'admin') ($eq status 'IN-REVIEW')}}
+          <p>
+            <button id='approve' type="button" class="btn btn-success review">Approve</button>
+            <button id='reject' type="button" class="btn btn-danger review" data-toggle="modal" data-target="#rejectModal">Reject</button>
+          </p>
+          <p>
+            {{> download functionDoc}}
+          </p>
+        {{/if}}
+      </fieldset>
+      {{/autoForm}}        
+    </div>
+  </div>
+  {{/with}}
+  {{#if isInRole 'admin'}}
+  <div class="modal" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modalLabel">Submission Rejection</h4>
+        </div>
+        <div class="modal-body">
+          Reason:
+          <form>
+            <textarea id="reason" class="form-control" rows="3"></textarea>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button id="submit" type="button" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/if}}
+</template>

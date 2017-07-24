@@ -1,11 +1,11 @@
 import { AutoForm } from 'meteor/aldeed:autoform';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-import  devSchema from '../../../../api/developers/schema';
+import  schema from '../../../../api/publishers/schema';
 import './wizard.html';
 
-Template.developerInfo.helpers({
+Template.publisherInfo.helpers({
   getSchema: function() {
-    return devSchema;
+    return schema;
   }
 })
 
@@ -41,4 +41,4 @@ var hooksObject = {
   }
 };
 
-AutoForm.hooks({'developer-info-form':hooksObject});
+AutoForm.hooks({'publisher-info-form':hooksObject});

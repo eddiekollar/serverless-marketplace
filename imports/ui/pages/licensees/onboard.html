@@ -1,0 +1,38 @@
+<template name="licenseeOnboard">
+  <div class="panel panel-default">
+    <div class="panel-heading"><h4 class="text-center">Payment Information</h4></div>
+    <div class="panel-body">
+    <form>
+      <div class="form-group">
+        <label for="recurly-first_name">First Name</label>
+        <input type="text" data-recurly="first_name" id="firstName">
+      </div>
+      <div class="form-group">
+        <label for="recurly-last_name">Last Name</label>
+        <input type="text" data-recurly="last_name" id="lastName">
+      </div>
+      
+      <div class="form-group">
+        <label for="">Card Number</label>
+
+        <div data-recurly="number" id="recurly-number">
+          <div class="recurly-hosted-field recurly-hosted-field-number"></div>
+        </div>
+
+      </div>
+
+      <div class="form-group">
+        <div class="recurly-hosted-field recurly-hosted-field-number" data-recurly="month" id="recurly-month"></div>
+      </div>
+      <div class="form-group">
+        <div class="recurly-hosted-field recurly-hosted-field-number"  data-recurly="year" id="recurly-year"></div>
+      </div>
+      <div class="form-group">
+        <div class="recurly-hosted-field recurly-hosted-field-number" data-recurly="cvv" id="recurly-cvv"></div>
+      </div>
+      <input type="hidden" name="recurly-token" data-recurly="token">
+      <button id='subscribe' type="submit" class="btn btn-success">Subscribe</button>
+    </form>
+    </div>
+  </div>
+</template>

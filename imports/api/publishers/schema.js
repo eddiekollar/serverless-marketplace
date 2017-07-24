@@ -1,8 +1,8 @@
 import SimpleSchema from 'simpl-schema';
-import {Developers} from './developers'; 
+import {Publishers} from './publishers'; 
 SimpleSchema.extendOptions(['autoform']);
 
-const devProfileSchema = new SimpleSchema({
+const profileSchema = new SimpleSchema({
   userId: {
     type: String,
     autoform: {
@@ -25,7 +25,10 @@ const devProfileSchema = new SimpleSchema({
   'address.street2': { type: String, optional: true },
   'address.city': String,
   'address.state': String,
-  'address.postalCode': String,
+  'address.postalCode': {
+    type: String,
+    regEx: SimpleSchema.RegEx.ZipCode
+  },
   bank: Object,
   'bank.routing': String,
   'bank.account': String,
@@ -65,6 +68,6 @@ const devProfileSchema = new SimpleSchema({
   },
 });
 
-Developers.attachSchema(devProfileSchema);
+Publishers.attachSchema(profileSchema);
 
-module.exports = devProfileSchema;
+module.exports = profileSchema;

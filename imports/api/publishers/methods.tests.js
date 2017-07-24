@@ -4,7 +4,7 @@
 
 import { Meteor } from 'meteor/meteor';
 import { assert } from 'meteor/practicalmeteor:chai';
-import { Developers } from './developers';
+import { Publishers } from './publishers';
 import './methods.js';
 
 if (Meteor.isServer) {

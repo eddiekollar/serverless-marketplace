@@ -2,3 +2,4 @@
 // e.g. useraccounts configuration file.
 import './accounts';
 import './simpleSchema';
+import './users';

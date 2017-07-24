@@ -1,0 +1,7 @@
+<template name="download">
+  {{#with file}}
+  <a class="btn btn-default" role="button" href="{{link}}?download=true" download="{{name}}" target="_parent">
+    Download: {{name}}
+  </a>
+  {{/with}}
+</template>

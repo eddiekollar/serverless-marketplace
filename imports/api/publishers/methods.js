@@ -2,13 +2,13 @@
 
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
-import { Developers } from './developers';
+import { Publishers } from './publishers';
 
 Meteor.methods({
-  'developers.insert'(profile) {
+  'publishers.insert'(profile) {
     check(profile, Object);
     const userId = this.userId;
-    return Developers.insert(profile, function(error, id){
+    return Publishers.insert(profile, function(error, id){
       if(!error){
         Meteor.users.update(userId, {$set: {'profile.onboardComplete': true}}, function(err, i){
           
