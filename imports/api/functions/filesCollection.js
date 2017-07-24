@@ -12,6 +12,7 @@ import {Functions} from './collections';
 
 let awsConf = {};
 if (process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
+  console.log('setting up awsConf');
   awsConf = process.env.AWS;
 }else if(process.env.NODE_ENV && process.env.NODE_ENV === 'development') {
   awsConf = Meteor.settings.public.AWS;
