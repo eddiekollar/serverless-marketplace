@@ -10,7 +10,7 @@ import Recurly from 'node-recurly';
 let recurlyConfig = {};
  
 if (process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
-   recurlyConfig = process.env.recurly;
+   recurlyConfig = _.clone(process.env.recurly);
 }else{
   recurlyConfig = Meteor.settings.public.recurly;
 }
