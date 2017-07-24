@@ -34,7 +34,7 @@ FlowRouter.route('/', {
   },
 });
 
-FlowRouter.route('/terms-of-use', {
+FlowRouter.route('/terms', {
   name: 'terms',
   action() {
     BlazeLayout.render('App_body', { main: 'terms' });
