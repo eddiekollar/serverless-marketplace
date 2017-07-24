@@ -11,7 +11,7 @@ import fs from 'fs';
 import {Functions} from './collections';
 
 let awsConf = {};
-let config
+let config = {};
 if(Meteor.isServer){
   if (process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
     console.log('setting up awsConf');
@@ -31,8 +31,6 @@ if(Meteor.isServer){
       agent: false
     }
   };
-}else{
-  config = {};
 }
 
 const bound  = Meteor.bindEnvironment((callback) => {
