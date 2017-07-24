@@ -7,7 +7,14 @@ import {Roles} from 'meteor/alanning:roles';
 import { Licensees } from './licensees';
 import Recurly from 'node-recurly';
 
-const recurly = new Recurly(Meteor.settings.public.recurly);
+let recurlyConfig = {};
+ 
+if (process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
+   recurlyConfig = process.env.recurly;
+}else{
+  recurlyConfig = Meteor.settings.public.recurly;
+}
+const recurly = new Recurly(recurlyConfig);
 
 Meteor.methods({
   'licensee.subscribe'(userInfo) {
