@@ -11,28 +11,34 @@ import fs from 'fs';
 import {Functions} from './collections';
 
 let awsConf = {};
-if (process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
-  console.log('setting up awsConf');
-  awsConf = process.env.AWS;
-}else if(process.env.NODE_ENV && process.env.NODE_ENV === 'development') {
-  awsConf = Meteor.settings.public.AWS;
+let config
+if(Meteor.isServer){
+  if (process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
+    console.log('setting up awsConf');
+    awsConf = process.env.AWS;
+  }else if(process.env.NODE_ENV && process.env.NODE_ENV === 'development') {
+    awsConf = Meteor.settings.public.AWS;
+  }else{
+    awsConf = Meteor.settings.public.AWS;
+  }
+
+  config = {
+    secretAccessKey: awsConf.secret,
+    accessKeyId: awsConf.key,
+    region: awsConf.region,
+    httpOptions: {
+      timeout: 6000,
+      agent: false
+    }
+  };
 }else{
-  awsConf = Meteor.settings.public.AWS;
+  config = {};
 }
 
 const bound  = Meteor.bindEnvironment((callback) => {
   return callback();
 });
 
-let config = {
-  secretAccessKey: awsConf.secret,
-  accessKeyId: awsConf.key,
-  region: awsConf.region,
-  httpOptions: {
-    timeout: 6000,
-    agent: false
-  }
-};
 
 const s3 = new S3(config);
 const lambda = new Lambda(config);
