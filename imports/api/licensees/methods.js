@@ -6,15 +6,20 @@ import { Random } from 'meteor/random';
 import {Roles} from 'meteor/alanning:roles'; 
 import { Licensees } from './licensees';
 import Recurly from 'node-recurly';
-
-let recurlyConfig = {};
  
+let config = {};
 if (process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
-   recurlyConfig = _.clone(process.env.recurly);
+    config = _.clone(process.env.recurly);
 }else{
   recurlyConfig = Meteor.settings.public.recurly;
 }
-const recurly = new Recurly(recurlyConfig);
+
+let recurlyConfig = {
+  API_KEY: config.API_KEY,
+  SUBDOMAIN: config.SUBDOMAIN,
+  ENVIRONMENT: config.ENVIRONMENT
+};
+let recurly = new Recurly(recurlyConfig);
 
 Meteor.methods({
   'licensee.subscribe'(userInfo) {
