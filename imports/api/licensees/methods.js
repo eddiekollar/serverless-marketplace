@@ -11,7 +11,7 @@ let config = {};
 if (process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
     config = _.clone(process.env.recurly);
 }else{
-  recurlyConfig = Meteor.settings.public.recurly;
+  config = Meteor.settings.public.recurly;
 }
 
 let recurlyConfig = {
@@ -19,6 +19,7 @@ let recurlyConfig = {
   SUBDOMAIN: config.SUBDOMAIN,
   ENVIRONMENT: config.ENVIRONMENT
 };
+
 let recurly = new Recurly(recurlyConfig);
 
 Meteor.methods({
@@ -37,8 +38,6 @@ Meteor.methods({
       }
     };
 
-    console.log(account);
-
     recurly.subscriptions.create({
       plan_code: 'monthly',
       currency: 'USD',
@@ -48,15 +47,16 @@ Meteor.methods({
         // var message = parseErrors(err.data);
         console.error(err);
       }else{
-        console.log(response)
+        console.log('response from recurly');
       }
     });
 
-    profile = {
+    const profile = {
       recurlyAccountId: accountId,
       firstName: userInfo.firstName,
       lastName: userInfo.lastName,
-    }
+    };
+
     return Licensees.insert(profile, function(error, id){
       if(!error){
           Meteor.users.update(userId, {$set: {'profile.onboardComplete': true}}, function(err, i){

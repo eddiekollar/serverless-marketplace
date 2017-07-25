@@ -115,12 +115,13 @@ const functionForkSchema = new SimpleSchema({
       omit: true
     },
     autoValue: function() {
-      if(this.isSet){
-        return this.value;
-      }else{
+      if (this.isInsert) {
         return this.userId;
+      } else {
+        this.unset(); 
       }
-    }
+    },
+    denyUpdate: true
   },
   ARN: {
     type: String,

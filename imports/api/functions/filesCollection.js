@@ -56,71 +56,72 @@ FunctionZIPs = new FilesCollection({
   // after fully received by the Meteor server
   onAfterUpload(fileRef) {
     // Run through each of the uploaded file
-    
-    _.each(fileRef.versions, (vRef, version) => {
-      // We use Random.id() instead of real file's _id
-      // to secure files from reverse engineering on the AWS client
-      const filePath = 'files/' + fileRef._id + '-' + version + '.' + fileRef.extension;
+    if(Meteor.isServer){
+      _.each(fileRef.versions, (vRef, version) => {
+        // We use Random.id() instead of real file's _id
+        // to secure files from reverse engineering on the AWS client
+        const filePath = 'files/' + fileRef._id + '-' + version + '.' + fileRef.extension;
 
-      // Create the AWS:S3 object.
-      // Feel free to change the storage class from, see the documentation,
-      // `STANDARD_IA` is the best deal for low access files.
-      // Key is the file name we are creating on AWS:S3, so it will be like files/XXXXXXXXXXXXXXXXX-original.XXXX
-      // Body is the file stream we are sending to AWS
-      s3.putObject({
-        // ServerSideEncryption: 'AES256', // Optional
-        StorageClass: 'STANDARD',
-        Bucket: awsConf.s3.bucket,
-        Key: filePath,
-        Body: fs.createReadStream(vRef.path),
-        ContentType: vRef.type,
-      }).promise().then((data) => {
-        bound(() => {
-          // Update FilesCollection with link to the file at AWS
-          const upd = { $set: {} };
-          upd['$set']['versions.' + version + '.meta.pipePath'] = filePath;
+        // Create the AWS:S3 object.
+        // Feel free to change the storage class from, see the documentation,
+        // `STANDARD_IA` is the best deal for low access files.
+        // Key is the file name we are creating on AWS:S3, so it will be like files/XXXXXXXXXXXXXXXXX-original.XXXX
+        // Body is the file stream we are sending to AWS
+        s3.putObject({
+          // ServerSideEncryption: 'AES256', // Optional
+          StorageClass: 'STANDARD',
+          Bucket: awsConf.s3.bucket,
+          Key: filePath,
+          Body: fs.createReadStream(vRef.path),
+          ContentType: vRef.type,
+        }).promise().then((data) => {
+          bound(() => {
+            // Update FilesCollection with link to the file at AWS
+            const upd = { $set: {} };
+            upd['$set']['versions.' + version + '.meta.pipePath'] = filePath;
 
-          // const payload =  {
-          //     Bucket: awsConf.s3.bucket,
-          //     Key: filePath,
-          //     pathPrefix: fileRef._id
-          //   };
-          // const payloadString = JSON.stringify(payload);
+            // const payload =  {
+            //     Bucket: awsConf.s3.bucket,
+            //     Key: filePath,
+            //     pathPrefix: fileRef._id
+            //   };
+            // const payloadString = JSON.stringify(payload);
 
-          // const args = {
-          //   FunctionName : 'market-services-dev-prepareSubmission',
-          //   Payload: payloadString
-          // };
+            // const args = {
+            //   FunctionName : 'market-services-dev-prepareSubmission',
+            //   Payload: payloadString
+            // };
 
-          // lambda.invoke(args).promise()
-          // .then(function(data){
-          //   console.log('Invoke: ', data);
-          // }).catch(function(error){
-          //   console.error(error);
-          // });
+            // lambda.invoke(args).promise()
+            // .then(function(data){
+            //   console.log('Invoke: ', data);
+            // }).catch(function(error){
+            //   console.error(error);
+            // });
 
-          const functionId = fileRef.meta.functionId;
+            const functionId = fileRef.meta.functionId;
 
-          Functions.update({_id: functionId}, {$set: {fileId: fileRef._id}}, function(error,result){
-            if(error){
-              console.error(error, result);
-            }else{
-              console.log(result);
-            }
-          });
-          
-          //update collection 
-          this.collection.update({_id: fileRef._id}, upd, (updError) => {
-            if (updError) {
-              console.error(updError);
-            } else {
-              // Unlink original files from FS after successful upload to AWS:S3
-              this.unlink(this.collection.findOne(fileRef._id), version);
-            }
+            Functions.update({_id: functionId}, {$set: {fileId: fileRef._id}}, function(error,result){
+              if(error){
+                console.error(error, result);
+              }else{
+                console.log(result);
+              }
+            });
+            
+            //update collection 
+            this.collection.update({_id: fileRef._id}, upd, (updError) => {
+              if (updError) {
+                console.error(updError);
+              } else {
+                // Unlink original files from FS after successful upload to AWS:S3
+                this.unlink(this.collection.findOne(fileRef._id), version);
+              }
+            });
           });
         });
       });
-    });
+    }
   },
   // Intercept access to the file
   // And redirect request to AWS:S3

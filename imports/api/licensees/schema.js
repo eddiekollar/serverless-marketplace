@@ -18,11 +18,17 @@ const licenseeSchema = new SimpleSchema({
     },
     userId: {
       type: String,
+      autoform: {
+        omit: true
+      },
       autoValue: function() {
         if (this.isInsert) {
-          this.userId;
+          return this.userId;
+        } else {
+          this.unset(); 
         }
-      }
+      },
+      denyUpdate: true
     },
    createdAt: {
     autoform: {
