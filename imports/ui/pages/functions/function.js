@@ -64,7 +64,9 @@ Template.function.events({
     }
   },
   'click #submit'(events){
-    Meteor.call('function.review', {type:'reject', reason: $('#reason').val()}, function(err, data){
+    $('#rejectModal').modal('hide');
+    const doc = getFunctionDoc();
+    Meteor.call('function.review', {_id: doc._id, type:'reject', reason: $('#reason').val()}, function(err, data){
         FlowRouter.go('/admin/dashboard/');
       });
   }

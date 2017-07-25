@@ -3,7 +3,7 @@ import { check } from 'meteor/check';
 import {Roles} from 'meteor/alanning:roles'; 
 import { Functions, FunctionForks } from './collections.js';
 import { completeFunctionForking} from './collectionHooks';
-//import {Email} from '../utils/email';
+import {sendFunctionReviewEmail} from '../utils/email';
 
 Meteor.methods({
   'function.fork'(functionId) {
@@ -18,13 +18,22 @@ Meteor.methods({
   },
   'function.review'(updateObj){
     check(updateObj, Object);
-    console.log(updateObj)
+    
+    const functionDoc = Functions.findOne({_id: updateObj._id});
+
     if(Roles.userIsInRole(this.userId, ['admin'], Roles.GLOBAL_GROUP)){
+      let modifier = {};
       if(updateObj.type === 'approve') {
-        return Functions.update({_id: updateObj._id}, {$set: {status: 'ACTIVE'}});
-      }else{
-        return Functions.update({_id: updateObj._id}, {$set: {status: 'REJECTED'}});
+        modifier = {$set: {status: 'ACTIVE'}};
       }
+      else{
+        modifier = {$set: {status: 'REJECTED'}};
+      }
+      return Functions.update({_id: updateObj._id}, modifier,{},function(error, num){
+        if(!error){
+          sendFunctionReviewEmail(functionDoc, updateObj);
+        }
+      });
     }else{
       throw new Meteor.Error('not-allowed', "Operation not allowed by this user");
     }

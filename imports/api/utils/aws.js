@@ -52,6 +52,19 @@ const deployLambda = function(lambdaInfo) {
   });
 }
 
+const invokeLambda = function(functionName, params) {
+  const args = {
+    FunctionName: functionName,
+    InvocationType: 'RequestResponse',
+    Payload: JSON.stringify(params)
+  }
+
+  return lambda.invoke(args).promise().then(function(lambdaData){
+    const payload = JSON.parse(lambdaData.Payload);
+    return payload;
+  });
+}
+
 const callFunction = function(functionFork, params) {
   delete params.api_key;
 
@@ -67,4 +80,4 @@ const callFunction = function(functionFork, params) {
   });
 }
 
-export {AWSconfig, deployLambda, callFunction};
+export {AWSconfig, deployLambda, callFunction, invokeLambda};
