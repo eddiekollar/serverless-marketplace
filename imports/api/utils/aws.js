@@ -52,7 +52,7 @@ const deployLambda = function(lambdaInfo) {
   });
 }
 
-const callFunctionFromREST = function(functionFork, params) {
+const callFunction = function(functionFork, params) {
   delete params.api_key;
 
   const args = {
@@ -60,6 +60,11 @@ const callFunctionFromREST = function(functionFork, params) {
     InvocationType: 'RequestResponse',
     Payload: JSON.stringify(params)
   }
+
+  return lambda.invoke(args).promise().then(function(lambdaData){
+    const payload = JSON.parse(lambdaData.Payload);
+    return payload;
+  });
 }
 
-export {AWSconfig, deployLambda};
+export {AWSconfig, deployLambda, callFunction};

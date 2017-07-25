@@ -1,6 +1,6 @@
-import {Restivus} from 'meteor/nimble:restivus';
+import {Restivus} from 'meteor/lepozepo:restivus';
 import {FunctionForks} from '../functions/collections';
-import {AWSconfig, deployLambda} from '../utils/aws';
+import {AWSconfig, deployLambda, callFunction} from '../utils/aws';
 
 const Api = new Restivus({
     prettyJson: true
@@ -13,18 +13,22 @@ Api.addRoute('functions/:name', {
     const name = this.urlParams.name;
     const api_key = this.queryParams.api_key;
 
-    const functionCall = FunctionForks.findOne({name: name});
+    const functionFork = FunctionForks.findOne({name: name});
 
-    if(functionCall){
-      if(functionCall.apiKey === api_key){
-
-        return {
-          statusCode: 200,
-          body: {
-            status: 'success',
-            message: 'awesome!'
+    if(functionFork){
+      if(functionFork.apiKey === api_key){
+        console.log('calling ', functionFork.name);
+        return callFunction(functionFork, this.queryParams).then(function(data){
+          return {
+            statusCode: 200,
+            body: data
           }
-        };
+        }).catch(function(error){
+          return {
+            statusCode: 500,
+            body: error
+          }
+        });
       }else{
         return {
           status: 401,

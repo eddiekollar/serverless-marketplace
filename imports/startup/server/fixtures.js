@@ -11,7 +11,7 @@ Meteor.startup(() => {
 
   //Only create admins once
   const adminCount = Meteor.roles.find({name: 'admin'}).count();
-  console.log('Admin count: ', adminCount);
+
   if(!adminCount || adminCount === 0){
     console.log('creating admins');
     _.each(adminUsers, function(user){
