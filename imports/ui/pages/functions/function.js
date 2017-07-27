@@ -5,7 +5,10 @@ import {functionSchema} from '../../../api/functions/schemas.js';
 import './function.html';
 import '../../components/files/download.js';
 
+import momment from 'moment';
+
 Template.function.onCreated(function(){
+  window.momment = momment;
   const template = this;
   template.isForking = new ReactiveVar(false);
   template.currentDoc = new ReactiveVar(false);

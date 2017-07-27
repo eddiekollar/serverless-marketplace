@@ -5,17 +5,25 @@
 
   <div class="panel panel-default">
     <div class="panel-body">
-      <div class="row">
-        {{#if Template.subscriptionsReady}}
+      {{#if Template.subscriptionsReady}}
+        <div class="row">
+        {{#with getStats}}
+          <div class="col-xs-3"><h4>Total Called: {{timesCalledAll}}</h4></div>
+          <div class="col-xs-3"><h4>Total Earned: ${{earningsAll}}</h4></div>
+          <div class="col-xs-3"><h4>Calls Today: {{timesCalledToday}}</h4></div>
+          <div class="col-xs-3"><h4>Earned Today: ${{earningsToday}}</h4></div>
+        {{/with}}
+        </div>
+        <div class="row">
           {{#each getFunctionList}}
             <div class="col-xs-6 col-sm-4">
             {{> functionDetails}}
             </div>
-            {{else}}
+          {{else}}
               <p class="bg-warning" style="padding:15px">No functions available</p>
           {{/each}}
-        {{/if}}
-      </div>
+        </div>
+      {{/if}}
     </div>
   </div>
 </template>
