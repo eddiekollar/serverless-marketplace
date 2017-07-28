@@ -75,7 +75,7 @@ FunctionForks.helpers({
         return `${param.key}=value&`;
       });
 
-      params = paramArray.join();
+      params = paramArray.join('');
     }
 
     return `${this.url}/?${params}${apiKeyParam}`;

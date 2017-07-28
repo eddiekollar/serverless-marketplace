@@ -5,6 +5,9 @@ import fs from 'fs';
 let AWSconfig = {};
 if (process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
   AWSconfig = process.env.AWS;
+  if((typeof AWSconfig) === 'string'){
+    AWSconfig = JSON.parse(AWSconfig);
+  }
 }else if(process.env.NODE_ENV && process.env.NODE_ENV === 'development') {
   AWSconfig = Meteor.settings.public.AWS;
 }
