@@ -1,0 +1,23 @@
+{
+  "environments": {
+    "production": {
+      "env": {
+        "AWS":{
+          "role_name": "market-services-dev-us-east-2-lambdaRole",
+          "key": "AKIAJRWZWMUU7YVCQ5WA",
+          "secret": "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",
+          "region": "us-east-2",
+          "s3": {
+            "bucket": "the.mr.bucket.original"
+          }
+        },
+        "recurly":{
+          "API_KEY": "0bc7c0d1702441289ae91e9db5b922f6",
+          "SUBDOMAIN": "bitstaq",
+          "ENVIRONMENT":  "sandbox",
+          "DEBUG": true
+        }
+      }
+    }
+  }
+}

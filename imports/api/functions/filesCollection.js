@@ -14,8 +14,8 @@ let awsConf = {};
 let config = {};
 if(Meteor.isServer){
   if (process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
-    console.log('setting up awsConf');
     awsConf = process.env.AWS;
+    console.log('setting up awsConf', awsConf);
   }else if(process.env.NODE_ENV && process.env.NODE_ENV === 'development') {
     awsConf = Meteor.settings.public.AWS;
   }else{
