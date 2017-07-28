@@ -10,6 +10,9 @@ import Recurly from 'node-recurly';
 let config = {};
 if (process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
     config = _.clone(process.env.recurly);
+    if((typeof config) === 'string'){
+      config = JSON.parse(config);
+    }
 }else{
   config = Meteor.settings.public.recurly;
 }

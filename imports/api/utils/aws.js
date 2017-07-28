@@ -21,7 +21,7 @@ let config = {
   accessKeyId: AWSconfig.key,
   region: AWSconfig.region,
   httpOptions: {
-    timeout: 6000,
+    timeout: 600000,
     agent: false
   }
 };
