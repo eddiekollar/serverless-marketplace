@@ -6,10 +6,10 @@ Template.download.onCreated(function(){
   template.currentDoc = new ReactiveVar(false);
   template.autorun(() => {
     const data = Template.currentData();
-    const id = data._id || '';
+    const id = data.fileId || '';
 
     this.subscribe('files.one', id, function(){
-      const file = FunctionZIPs.findOne({_id: data.fileId});
+      const file = FunctionZIPs.findOne({_id: id});
       template.currentDoc.set(file);
     });
   })

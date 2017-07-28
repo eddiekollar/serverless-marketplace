@@ -156,7 +156,6 @@ licensees.route('/onboard', {
   triggersEnter: [
     function() {
       const user = Meteor.user();
-      console.log(user);
     }
   ]
 });

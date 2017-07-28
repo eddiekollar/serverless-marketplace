@@ -21,11 +21,8 @@ Meteor.publish('functions.all', function () {
   }
 });
 
-Meteor.publish('files.one', function(functionId){
-  check(functionId, String);
-
-  const functionDoc = Functions.findOne({_id: functionId});
-  const fileId = functionDoc.fileId || '';
+Meteor.publish('files.one', function(fileId){
+  check(fileId, String);
 
   return FunctionZIPs.find({_id: fileId}).cursor;
 })
