@@ -67,11 +67,12 @@ FunctionZIPs = new FilesCollection({
         // `STANDARD_IA` is the best deal for low access files.
         // Key is the file name we are creating on AWS:S3, so it will be like files/XXXXXXXXXXXXXXXXX-original.XXXX
         // Body is the file stream we are sending to AWS
-        console.log(awsConf);
+        console.log('awsConf', awsConf);
+        const bucket = awsConf.s3.bucket;
         s3.putObject({
           // ServerSideEncryption: 'AES256', // Optional
           StorageClass: 'STANDARD',
-          Bucket: awsConf.s3.bucket,
+          Bucket: bucket,
           Key: filePath,
           Body: fs.createReadStream(vRef.path),
           ContentType: vRef.type,
