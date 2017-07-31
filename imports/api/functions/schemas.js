@@ -1,6 +1,6 @@
 import { Random } from 'meteor/random';
 import SimpleSchema from 'simpl-schema';
-import {Functions, FunctionForks} from './collections'; 
+import {Functions, FunctionForks, UsageStats} from './collections'; 
 
 SimpleSchema.extendOptions(['autoform']);
 
@@ -172,7 +172,63 @@ const functionForkSchema = new SimpleSchema({
   }
 });
 
+const statsSchema = new SimpleSchema({
+  UsageType:{
+    type: String
+  },
+  Operation: {
+    type: String
+  },
+  UsageStartDate:{
+    type: Date,
+    autoValue: function() {
+      if(!this.isSet && this.isInsert){
+        return new Date();
+      }else if(this.isInsert){
+        return this.value;
+      }else{
+        this.unset();
+      }
+    }
+  },
+  UsageEndDate: {
+    type: Date,
+    autoValue: function() {
+      if(!this.isSet && this.isInsert){
+        return new Date();
+      }else if(this.isInsert){
+        return this.value;
+      }else{
+        this.unset();
+      }
+    }
+  },
+  UsageQuantity: {
+    type: String,
+    autoValue: function() {
+      if(!this.isSet && this.isInsert) {
+        return "1";
+      }
+    }
+  },
+  Cost:{
+    type: String,
+    optional: true
+  },
+  ResourceId: {
+    type: String
+  },
+  source: {
+    type: String
+  },
+  forkId: {
+    type: String,
+    optional: true
+  }
+})
+
 Functions.attachSchema(functionSchema);
 FunctionForks.attachSchema(functionForkSchema);
+UsageStats.attachSchema(statsSchema);
 
-export {functionSchema, functionForkSchema};
+export {functionSchema, functionForkSchema, statsSchema};

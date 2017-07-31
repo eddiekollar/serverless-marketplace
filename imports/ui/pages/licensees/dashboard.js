@@ -10,6 +10,12 @@ Template.licenseeDashboard.onCreated(function(){
   });
 })
 
+Template.licenseeDashboard.events({
+  'click #marketplace'() {
+    FlowRouter.go('/');
+  }
+});
+
 Template.licenseeDashboard.helpers({
   getStats: function() {
     const stats = FunctionForks.find().map(function(fork){

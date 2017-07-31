@@ -25,12 +25,12 @@ Functions.helpers({
     });
 
     if(durationType === 'today'){
-      const today = momment(Date.now());
-      UsageStats.find({$and: [{ResourceId: {$in: arns}}, {UsageStartDate: {$gte: today.toDate()}}]}).forEach(function(stat){
+      const today = momment(Date.now()).startOf('day');
+      UsageStats.find({$and: [{source: 'APP'}, {ResourceId: {$in: arns}}, {UsageStartDate: {$gte: today.toDate()}}]}).forEach(function(stat){
         timesCalled += parseInt(stat.UsageQuantity);
       });
     }else{ //all time
-      UsageStats.find({ResourceId: {$in: arns}}).forEach(function(stat){
+      UsageStats.find({$and: [{ResourceId: {$in: arns}}, {source: 'APP'}]}).forEach(function(stat){
         timesCalled += parseInt(stat.UsageQuantity);
       });
     }
@@ -45,12 +45,13 @@ Functions.helpers({
     });
     
     if(durationType === 'today'){
-      const today = momment(Date.now());
-      UsageStats.find({$and: [{ResourceId: {$in: arns}}, {UsageStartDate: {$gte: today.toDate()}}]}).forEach(function(stat){
+      const today = momment(Date.now()).startOf('day');
+      const cond = {$and: [{source: 'AWS'}, {ResourceId: {$in: arns}}, {UsageStartDate: {$gte: today.toDate()}}]};
+      UsageStats.find(cond).forEach(function(stat){
         earnings += parseFloat(stat.Cost);
       });
     }else{ //all time
-      UsageStats.find({ResourceId: {$in: arns}}).forEach(function(stat){
+      UsageStats.find({$and: [{ResourceId: this.ARN}, {source: 'AWS'}]}).forEach(function(stat){
         earnings += parseFloat(stat.Cost);
       });
     }
@@ -86,12 +87,12 @@ FunctionForks.helpers({
   timesCalled: function(durationType) {
     let timesCalled = 0;
     if(durationType === 'today'){
-      const today = momment(Date.now());
-      UsageStats.find({$and: [{ResourceId: this.ARN}, {UsageStartDate: {$gte: today.toDate()}}]}).forEach(function(stat){
+      const today = momment(Date.now()).startOf('day');
+      UsageStats.find({$and: [{source: 'APP'}, {ResourceId: this.ARN}, {UsageStartDate: {$gte: today.toDate()}}]}).forEach(function(stat){
         timesCalled += parseInt(stat.UsageQuantity);
       });
     }else{ //all time
-      UsageStats.find({ResourceId: this.ARN}).forEach(function(stat){
+      UsageStats.find({$and: [{ResourceId: this.ARN}, {source: 'APP'}]}).forEach(function(stat){
         timesCalled += parseInt(stat.UsageQuantity);
       })
     }
@@ -101,12 +102,12 @@ FunctionForks.helpers({
     let cost = 0;
 
     if(durationType === 'today'){
-      const today = momment(Date.now());
-      UsageStats.find({$and: [{ResourceId: this.ARN}, {UsageStartDate: {$gte: today.toDate()}}]}).forEach(function(stat){
+      const today = momment(Date.now()).startOf('day');
+      UsageStats.find({$and: [{source: 'AWS'}, {ResourceId: this.ARN}, {UsageStartDate: {$gte: today.toDate()}}]}).forEach(function(stat){
         cost += parseFloat(stat.Cost);
       });
     }else{ //all time
-      UsageStats.find({ResourceId: this.ARN}).forEach(function(stat){
+      UsageStats.find({$and: [{ResourceId: this.ARN}, {source: 'AWS'}]}).forEach(function(stat){
         cost += parseFloat(stat.Cost);
       })
     }

@@ -1,5 +1,5 @@
 import {Restivus} from 'meteor/lepozepo:restivus';
-import {FunctionForks} from '../functions/collections';
+import {FunctionForks, UsageStats} from '../functions/collections';
 import {AWSconfig, deployLambda, callFunction} from '../utils/aws';
 
 const Api = new Restivus({
@@ -19,6 +19,14 @@ Api.addRoute('functions/:name', {
       if(functionFork.apiKey === api_key){
         console.log('calling ', functionFork.name);
         return callFunction(functionFork, this.queryParams).then(function(data){
+          UsageStats.insert({
+            UsageType: "Request",
+            Operation: "Invoke",
+            UsageQuantity: 1,
+            ResourceId: functionFork.ARN,
+            source: 'APP',
+            forkId: functionFork._id
+          });
           return {
             statusCode: 200,
             body: data
