@@ -57,8 +57,17 @@ Meteor.publish('forks.one', function(forkId){
 });
 
 Meteor.publish('functions.active', function(){
-  return [Functions.find({status: 'ACTIVE'}),
-  FunctionForks.find({},{fields: {_id: 1}})];
+  const functionCursor = Functions.find({status: 'ACTIVE'});
+  const functionIds = functionCursor.map(function(func){
+    return func._id;
+  });
+  const forkCursor = FunctionForks.find({functionId: {$in: functionIds}});
+  const arns = forkCursor.map(function(fork){
+    return fork.ARN;
+  });
+
+  return [functionCursor, forkCursor, UsageStats.find({ResourceId: {$in: arns}})];
+
 })
 
 Meteor.publish('functions.mine', function () {

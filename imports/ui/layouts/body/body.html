@@ -3,4 +3,8 @@
   <div class="container">
     {{> Template.dynamic template=main data=params}}
   </div>
+  {{#unless currentUser}}
+  <iframe src="https://codefor.cash/footer_html.php" class="iframe-style">
+  </iframe>
+  {{/unless}}
 </template>
