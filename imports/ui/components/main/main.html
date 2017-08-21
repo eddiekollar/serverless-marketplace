@@ -1,18 +1,22 @@
 <template name="main">
   {{#unless currentUser}}
-  <div class="jumbotron">
-    <h1 class="text-center">Serverless Marketplace</h1>
+  <div class="jumbotron jumbo">
+    <h1 class="text-center jumbo-header">Serverless Marketplace</h1>
     <p class="text-center">A marketplace for developers and function users</p>
     <p class="text-center">
-      <a id="join-publisher" class="btn btn-primary btn-lg" href="{{pathFor route='publisher.signup'}}" role="button">
+      <a id="join-publisher" href="{{pathFor route='publisher.signup'}}" role="button">
+        <button type="button" class="btn action-btn btn-lg">
         <span class="glyphicon glyphicon-console" aria-hidden="true"></span>
         Join as a code publisher
+        </button>
       </a>
     </p>
     <p class="text-center">
-      <a id="join-licensee" class="btn btn-success btn-lg" href="{{pathFor route='licensee.signup'}}" role="button">
+      <a id="join-licensee" class="btn btn-success btn-custom btn-lg" href="{{pathFor route='licensee.signup'}}" role="button">
+        <button type="button" class="btn btn-success btn-custom btn-lg">
         <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
         Join as code licensee
+        </button>
       </a>
     </p>
   </div>
