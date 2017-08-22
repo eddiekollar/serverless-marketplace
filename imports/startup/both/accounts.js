@@ -63,8 +63,6 @@ AccountsTemplates.configure({
     sendVerificationEmail: false,
     lowercaseUsername: false,
     focusFirstInput: true,
-    
-    hideSignUpLink: true,
 
     // Client-side Validation
     continuousValidation: false,
